@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ElectionIQ — A smart, interactive assistant that helps you understand the election process, timelines, and steps in a clear and engaging way." />
+  <meta name="theme-color" content="#1a1a2e" />
+  <title>ElectionIQ — Your Smart Election Guide</title>
+  <!-- Google Fonts: Poppins (headings) + Noto Sans (multilingual body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ====== HEADER ====== -->
+  <header id="main-header" role="banner">
+    <div class="header-inner">
+      <div class="logo" aria-label="ElectionIQ Logo">
+        <span class="logo-icon">🗳️</span>
+        <h1 id="app-title">ElectionIQ</h1>
+      </div>
+      <p class="subtitle" id="app-subtitle">Your Smart Election Guide</p>
+      <div class="header-controls">
+        <!-- Google Sign-In -->
+        <div id="google-signin-container">
+          <button id="google-signin-btn" class="google-signin-btn" aria-label="Sign in with Google">
+            <span>🔑 Sign In</span>
+          </button>
+          <div id="user-profile" class="user-profile" style="display:none;">
+            <img id="user-avatar" class="user-avatar" alt="User avatar" />
+            <span id="user-name" class="user-name"></span>
+            <button id="signout-btn" class="signout-btn" aria-label="Sign out">✕</button>
+          </div>
+        </div>
+        <div class="lang-selector" role="group" aria-label="Language selector">
+          <label for="lang-dropdown" id="lang-label">Language</label>
+          <select id="lang-dropdown" aria-label="Select language">
+            <option value="en">English</option>
+            <option value="hi">हिन्दी</option>
+          </select>
+        </div>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle light/dark theme" title="Toggle theme">
+          <span class="theme-icon theme-icon--sun">☀️</span>
+          <span class="theme-icon theme-icon--moon">🌙</span>
+          <span class="theme-toggle-slider"></span>
+        </button>
+      </div>
+    </div>
+    <nav class="nav-pills" role="navigation" aria-label="Section navigation">
+      <a href="#timeline-section" class="nav-pill active" data-section="timeline" data-i18n="nav_timeline">Timeline</a>
+      <a href="#chat-section" class="nav-pill" data-section="chat" data-i18n="nav_chat">Ask AI</a>
+      <a href="#polling-section" class="nav-pill" data-section="polling" data-i18n="nav_polling">Polling Station</a>
+      <a href="#calendar-section" class="nav-pill" data-section="calendar" data-i18n="nav_dates">Dates</a>
+      <a href="#quiz-section" class="nav-pill" data-section="quiz" data-i18n="nav_quiz">Quiz</a>
+      <a href="#news-section" class="nav-pill" data-section="news" data-i18n="nav_news">News</a>
+    </nav>
+  </header>
+
+  <main id="main-content" role="main">
+    <!-- ====== HERO ====== -->
+    <section id="hero-section" class="hero" aria-label="Welcome">
+      <div class="hero-content">
+        <h2 class="hero-title" data-i18n-html="hero_title">Understand Democracy,<br/><span class="gradient-text">One Step at a Time</span></h2>
+        <p class="hero-desc" data-i18n="hero_desc">Learn how elections work — from registration to results — with interactive guides, AI chat, and quizzes.</p>
+        <a href="#timeline-section" class="hero-cta" id="hero-cta-btn" data-i18n="hero_cta">Explore the Timeline →</a>
+      </div>
+      <div class="hero-particles" aria-hidden="true"></div>
+    </section>
+
+    <!-- ====== TIMELINE ====== -->
+    <section id="timeline-section" class="section" aria-labelledby="timeline-heading">
+      <h2 id="timeline-heading" class="section-title" data-i18n="timeline_title">Election Timeline</h2>
+      <div class="timeline" id="timeline" role="list" aria-label="Election process steps"></div>
+    </section>
+
+    <!-- ====== CHAT ====== -->
+    <section id="chat-section" class="section" aria-labelledby="chat-heading">
+      <h2 id="chat-heading" class="section-title" data-i18n="chat_title">Ask ElectionIQ</h2>
+      <div class="chat-container" role="region" aria-label="Chat with AI assistant">
+        <div class="chat-messages" id="chat-messages" role="log" aria-live="polite" aria-label="Chat messages">
+          <div class="chat-bubble bot">
+            <span class="chat-avatar">🤖</span>
+            <div class="chat-text">Hello! I'm <strong>ElectionIQ</strong>. Ask me anything about elections — registration, voting, counting, and more!</div>
+          </div>
+        </div>
+        <form class="chat-input-bar" id="chat-form" aria-label="Send a message">
+          <input type="text" id="chat-input" placeholder="Ask about elections..." maxlength="1000" autocomplete="off" aria-label="Type your question" data-i18n-placeholder="chat_placeholder" />
+          <button type="submit" id="chat-send-btn" aria-label="Send message" data-i18n="send_btn">Send</button>
+        </form>
+        <div class="chat-suggestions" id="chat-suggestions"></div>
+      </div>
+    </section>
+
+    <!-- ====== POLLING STATION ====== -->
+    <section id="polling-section" class="section" aria-labelledby="polling-heading">
+      <h2 id="polling-heading" class="section-title" data-i18n="poll_title">Find Your Polling Station</h2>
+      <div class="poll-finder">
+        <div class="poll-search">
+          <input type="text" id="poll-location-input" placeholder="Enter your city or pincode" aria-label="Enter location" data-i18n-placeholder="enter_location" />
+          <button id="poll-find-btn" aria-label="Find polling station" data-i18n="find_station">Find Station</button>
+        </div>
+        <div id="poll-results" class="poll-results" role="region" aria-label="Polling station results">
+          <div class="poll-placeholder">
+            <span class="poll-icon">🗺️</span>
+            <p data-i18n="poll_placeholder_text">Enter your city or pincode above to find nearby polling stations.</p>
+          </div>
+        </div>
+        <div id="poll-map" class="poll-map" style="display:block;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+             <h3 style="margin:0; font-size:1.1rem;">Live Polling Map</h3>
+             <button id="toggle-transit-btn" style="padding: 6px 12px; font-size: 0.8rem; background: var(--accent-blue); color: white; border: none; border-radius: 4px; cursor: pointer;">Toggle Transit Layer</button>
+          </div>
+          <div id="google-map" style="width:100%;height:350px;border-radius:12px;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== CALENDAR ====== -->
+    <section id="calendar-section" class="section" aria-labelledby="calendar-heading">
+      <h2 id="calendar-heading" class="section-title" data-i18n="calendar_title">Election Dates</h2>
+      <div class="calendar-grid" id="calendar-grid" role="list" aria-label="Upcoming election dates"></div>
+    </section>
+
+    <!-- ====== QUIZ ====== -->
+    <section id="quiz-section" class="section" aria-labelledby="quiz-heading">
+      <h2 id="quiz-heading" class="section-title" data-i18n="quiz_title">Test Your Knowledge</h2>
+      <div class="quiz-container" id="quiz-container" role="region" aria-label="Election quiz">
+        <div class="quiz-card" id="quiz-card"></div>
+      </div>
+      <!-- Leaderboard -->
+      <div class="leaderboard" id="leaderboard">
+        <h3 class="leaderboard-title">🏆 Top Scores</h3>
+        <div id="leaderboard-list" class="leaderboard-list"></div>
+      </div>
+    </section>
+
+    <!-- ====== NEWS ====== -->
+    <section id="news-section" class="section" aria-labelledby="news-heading">
+      <h2 id="news-heading" class="section-title" data-i18n="news_title">Election Resources</h2>
+      
+      <div class="youtube-container" style="margin-bottom: 2rem; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm);">
+        <iframe width="100%" height="400" src="https://www.youtube.com/embed/KRLJUcaHuR0" title="Election News 24/7 Live" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="display:block;" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      </div>
+
+      <div class="news-grid" id="news-grid" role="list" aria-label="Election news and resources">
+        <div class="loading-spinner" aria-label="Loading"><div class="spinner"></div></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ====== FOOTER ====== -->
+  <footer id="main-footer" role="contentinfo">
+    <div class="footer-inner">
+      <p data-i18n="footer_text">🗳️ <strong>ElectionIQ</strong> — Empowering citizens through civic education.</p>
+      <p class="footer-note" data-i18n-html="footer_note">This is an educational tool. For official information, visit <a href="https://eci.gov.in" target="_blank" rel="noopener noreferrer">eci.gov.in</a></p>
+    </div>
+  </footer>
+
+  <!-- Google Identity Services -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
