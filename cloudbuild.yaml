@@ -1,0 +1,33 @@
+steps:
+  # Build the Docker image
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["build", "-t", "gcr.io/$PROJECT_ID/electioniq", "."]
+
+  # Push the image to Container Registry
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/$PROJECT_ID/electioniq"]
+
+  # Deploy to Cloud Run
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: gcloud
+    args:
+      - "run"
+      - "deploy"
+      - "electioniq"
+      - "--image"
+      - "gcr.io/$PROJECT_ID/electioniq"
+      - "--region"
+      - "asia-south1"
+      - "--platform"
+      - "managed"
+      - "--allow-unauthenticated"
+      - "--set-env-vars"
+      - "GEMINI_API_KEY=${_GEMINI_API_KEY},GOOGLE_SEARCH_API_KEY=${_GOOGLE_SEARCH_API_KEY},GOOGLE_SEARCH_ENGINE_ID=${_GOOGLE_SEARCH_ENGINE_ID}"
+
+images:
+  - "gcr.io/$PROJECT_ID/electioniq"
+
+substitutions:
+  _GEMINI_API_KEY: ""
+  _GOOGLE_SEARCH_API_KEY: ""
+  _GOOGLE_SEARCH_ENGINE_ID: ""
